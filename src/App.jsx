@@ -1,33 +1,30 @@
-import { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Detail from './pages/Detail';
 
 function App() {
-  const [currentView, setCurrentView] = useState('home');
-
   const navLinks = [
-    { label: 'Inicio', view: 'home', isBtn: false },
-    { label: 'Discos', view: 'home', isBtn: false },
-    { label: 'Artistas', view: 'home', isBtn: false },
-    { label: 'Iniciar Sesión', view: 'login', isBtn: true },
-    { label: 'Registrarse', view: 'register', isBtn: true },
+    { label: 'Inicio', path: '/', isBtn: false },
+    { label: 'Discos', path: '/', isBtn: false },
+    { label: 'Artistas', path: '/', isBtn: false },
+    { label: 'Iniciar Sesión', path: '/login', isBtn: true },
+    { label: 'Registrarse', path: '/register', isBtn: true },
   ];
 
   return (
-    <>
-      <Header
-        title="TodoMúsica"
-        navLinks={navLinks}
-        currentView={currentView}
-        onNavigate={setCurrentView}
-      />
+    <BrowserRouter>
+      <Header title="TodoMúsica" navLinks={navLinks} />
 
-      {currentView === 'home' && <Home />}
-      {currentView === 'login' && <Login onNavigate={setCurrentView} />}
-      {currentView === 'register' && <Register onNavigate={setCurrentView} />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/detalle/:id" element={<Detail />} />
+      </Routes>
 
       <Footer
         author="Matias Villavicencio"
@@ -35,7 +32,7 @@ function App() {
         teacher="Jonathan Emanuel Cruz"
         commission="DWM4AP"
       />
-    </>
+    </BrowserRouter>
   );
 }
 
