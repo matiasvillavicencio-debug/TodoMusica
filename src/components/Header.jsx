@@ -1,4 +1,8 @@
-function Header({ title, navLinks, currentView, onNavigate }) {
+import { Link, useLocation } from 'react-router-dom';
+
+function Header({ title, navLinks }) {
+  const location = useLocation();
+
   return (
     <header className="header">
       <div className="header-brand">
@@ -6,36 +10,30 @@ function Header({ title, navLinks, currentView, onNavigate }) {
         <h1 className="header-title">{title}</h1>
       </div>
       
-      <nav className="header-nav" style={{ alignItems: 'center' }}>
+      <nav className="header-nav">
         {navLinks.map((link, index) => {
           if (link.isBtn) {
-            const isSelected = currentView === link.view;
+            const isSelected = location.pathname === link.path;
             return (
-              <button
+              <Link
                 key={index}
-                className={`btn ${isSelected ? 'btn-active' : ''}`}
-                style={{ padding: '8px 16px', fontSize: '0.9rem' }}
-                onClick={() => onNavigate(link.view)}
+                to={link.path}
+                className={`btn header-nav-btn ${isSelected ? 'btn-active' : ''}`}
               >
                 {link.label}
-              </button>
+              </Link>
             );
           }
 
-          const isLinkActive = currentView === link.view && !link.isBtn;
+          const isLinkActive = location.pathname === link.path && !link.isBtn;
           return (
-            <a
+            <Link
               key={index}
-              href="#"
-              className="nav-link"
-              style={{ color: isLinkActive ? '#22c55e' : 'white' }}
-              onClick={(e) => {
-                e.preventDefault();
-                onNavigate(link.view);
-              }}
+              to={link.path}
+              className={`nav-link ${isLinkActive ? 'active' : ''}`}
             >
               {link.label}
-            </a>
+            </Link>
           );
         })}
       </nav>

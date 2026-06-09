@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MiGifBienvenida from '../assets/Mesirve5.gif';
 
-function Login({ onNavigate }) {
+function Login() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -42,11 +44,8 @@ function Login({ onNavigate }) {
 
       if (response.ok && data.status === 'ok') {
         setMessage({ text: '¡Sesión iniciada con éxito!', type: 'success' });
-        
         localStorage.setItem('token', data.token);
-        
-        setTimeout(() => onNavigate('home'), 1000); 
-
+        setTimeout(() => navigate('/'), 1000); 
       } else {
         setMessage({ text: data.msg || 'Credenciales incorrectas', type: 'error' });
       }
@@ -61,20 +60,13 @@ function Login({ onNavigate }) {
         <img 
           src={MiGifBienvenida} 
           alt="Bienvenida" 
-          style={{ 
-            width: '180px', 
-            height: 'auto', 
-            display: 'block', 
-            margin: '0 auto 20px', 
-            borderRadius: '10px',
-            imageRendering: 'pixelated'
-          }} 
+          className="auth-gif"
         />
         
         <h2 className="auth-title">Iniciar Sesión</h2>
         
         {message.text && (
-          <p className="auth-message" style={{ color: message.type === 'success' ? '#22c55e' : '#ef4444' }}>
+          <p className={`auth-message ${message.type}`}>
             {message.text}
           </p>
         )}
@@ -92,14 +84,14 @@ function Login({ onNavigate }) {
             {errors.password && <span className="form-error">{errors.password}</span>}
           </div>
 
-          <button type="submit" className="btn btn-active btn-sm" style={{ width: '100%', marginTop: '10px' }}>
+          <button type="submit" className="btn btn-active btn-sm auth-btn-submit">
             Ingresar
           </button>
         </form>
 
         <p className="auth-switch">
           ¿No tienes cuenta?{' '}
-          <span className="auth-link" onClick={() => onNavigate('register')}>
+          <span className="auth-link" onClick={() => navigate('/register')}>
             Regístrate
           </span>
         </p>

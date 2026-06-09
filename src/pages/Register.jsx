@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MiGifBienvenida from '../assets/Mesirve5.gif';
 
-function Register({ onNavigate }) {
+function Register() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -52,9 +54,7 @@ function Register({ onNavigate }) {
     try {
       const response = await fetch('http://localhost:3000/api/users/register', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: formData.username,
           email: formData.email,
@@ -81,20 +81,13 @@ function Register({ onNavigate }) {
         <img 
           src={MiGifBienvenida} 
           alt="Bienvenida" 
-          style={{ 
-            width: '180px', 
-            height: 'auto', 
-            display: 'block', 
-            margin: '0 auto 20px', 
-            borderRadius: '10px',
-            imageRendering: 'pixelated'
-          }} 
+          className="auth-gif"
         />
         
         <h2 className="auth-title">Crear Cuenta</h2>
         
         {message.text && (
-          <p className="auth-message" style={{ color: message.type === 'success' ? '#22c55e' : '#ef4444' }}>
+          <p className={`auth-message ${message.type}`}>
             {message.text}
           </p>
         )}
@@ -124,14 +117,14 @@ function Register({ onNavigate }) {
             {errors.confirmPassword && <span className="form-error">{errors.confirmPassword}</span>}
           </div>
 
-          <button type="submit" className="btn btn-active btn-sm" style={{ width: '100%', marginTop: '10px' }}>
+          <button type="submit" className="btn btn-active btn-sm auth-btn-submit">
             Registrarse
           </button>
         </form>
 
         <p className="auth-switch">
           ¿Ya tienes cuenta?{' '}
-          <span className="auth-link" onClick={() => onNavigate('login')}>
+          <span className="auth-link" onClick={() => navigate('/login')}>
             Inicia sesión
           </span>
         </p>

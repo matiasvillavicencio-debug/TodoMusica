@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Card from '../components/Card';
 
 const DISCOS = [
@@ -17,13 +18,16 @@ const ARTISTAS = [
   { _id: 'a3', nombre: 'Fleetwood Mac', nacionalidad: 'Británica', generoPrincipal: 'Rock' },
 ];
 
-const GENRE_COLORS = {
-  Jazz: '#2a9d8f',
-  Pop: '#e9c46a',
-  'Pop/R&B': '#e76f51',
-  Rock: '#e63946',
-  Grunge: '#6d6875',
-  'Hip-hop': '#264653',
+const getAccentClass = (genre) => {
+  const classes = {
+    'Jazz': 'accent-jazz',
+    'Pop': 'accent-pop',
+    'Pop/R&B': 'accent-pop-rb',
+    'Rock': 'accent-rock',
+    'Grunge': 'accent-grunge',
+    'Hip-hop': 'accent-hiphop',
+  };
+  return classes[genre] || 'accent-default';
 };
 
 const Home = () => {
@@ -65,10 +69,12 @@ const Home = () => {
                 title={disco.titulo}
                 subtitle={disco.artista}
                 tag={disco.genero}
-                accent={GENRE_COLORS[disco.genero] || '#555'}
+                accentClass={getAccentClass(disco.genero)}
               >
                 <p className="card-year">📅 {disco.año}</p>
-                <button className="btn btn-sm">Ver detalle</button>
+                <Link to={`/detalle/${disco._id}`} className="btn btn-sm">
+                  Ver detalle
+                </Link>
               </Card>
             ))}
           </div>
@@ -87,11 +93,13 @@ const Home = () => {
                 title={artista.nombre}
                 subtitle={artista.nacionalidad}
                 tag={artista.generoPrincipal}
-                accent={GENRE_COLORS[artista.generoPrincipal] || '#555'}
+                accentClass={getAccentClass(artista.generoPrincipal)}
               >
                 <p className="card-detail">🎵 Género: {artista.generoPrincipal}</p>
                 <p className="card-detail">🌎 {artista.nacionalidad}</p>
-                <button className="btn btn-sm">Ver discografía</button>
+                <Link to={`/detalle/${artista._id}`} className="btn btn-sm">
+                  Ver discografía
+                </Link>
               </Card>
             ))}
           </div>
